@@ -1,7 +1,6 @@
-# (C) 2014, Leigh Maddock, <awesomesourcesoftware@gmail.com>
-# Please see https://github.com/leighmaddock/Monitor-Agent/LICENSE for license informati
-on
 #!/usr/bin/env python
+# (C) 2014, Leigh Maddock, <awesomesourcesoftware@gmail.com>
+# Please see https://github.com/leighmaddock/Monitor-Agent/LICENSE for license information
 #
 
 import SocketServer, subprocess, sys, os, signal
