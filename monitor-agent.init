@@ -1,0 +1,97 @@
+# (C) 2014, Leigh Maddock, <awesomesourcesoftware@gmail.com>
+# Please see https://github.com/leighmaddock/Monitor-Agent/LICENSE for license information
+#!/bin/sh
+# Start/stop script for monitor-agent.py
+USER="nobody"
+STATE=$1
+CMD="/usr/local/bin/monitor-agent.py"
+PIDFILE="/var/run/monitor-agent.pid"
+STDOUT="/var/log/monitor-agent.log"
+STDERR="/var/log/monitor-agent-error.log"
+
+
+getpid()
+{
+	cat $PIDFILE
+}
+
+isrunning()
+{
+	[ -f $PIDFILE ] && kill -0 `getpid` > /dev/null 2>&1
+}
+
+usage()
+{
+	echo "Usage: $0 <start/stop/restart/status>"
+	exit 1
+}
+
+start()
+{
+	if isrunning
+	then
+		echo "Already running"
+	else
+		echo "Starting agent"
+		su $USER -c $CMD >> $STDOUT 2>> $STDERR &
+		echo $! > $PIDFILE
+		if isrunning
+		then
+			echo "Started OK"
+		else
+			echo "Could not start, see $STDERR"
+			exit 2
+		fi
+	fi
+}
+
+status()
+{
+	if isrunning
+	then
+		echo "Running under pid `getpid`"
+	else
+		echo "Not currently running"
+	fi
+}
+
+stop()
+{
+	if isrunning
+	then
+		echo "Stopping Process"
+		pkill -P `getpid`
+		sleep 2
+		if isrunning
+		then
+			echo "Couldn't stop process, investigate"
+			exit 3
+		else
+			echo "Process stopped"
+			rm $PIDFILE
+		fi
+	else
+		echo "Already stopped"
+	fi
+}
+
+
+case "$STATE" in
+start)
+	start
+	;;
+stop)
+	stop
+	;;
+restart)
+	stop
+	sleep 5
+	start
+	;;
+status)
+	status
+	;;
+*)
+	usage
+	;;
+esac
