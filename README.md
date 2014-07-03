@@ -1,6 +1,4 @@
-# (C) 2014, Leigh Maddock, <awesomesourcesoftware@gmail.com>
-# Please see https://github.com/leighmaddock/Monitor-Agent/LICENSE for license informati
-on
+
 Monitor-Agent
 =============
 
@@ -24,3 +22,8 @@ Core python agent
 .monitor-agent.pass
 ---------
 A password file which contains the commands the agent is allowed to run.
+
+
+(C) 2014, Leigh Maddock, <awesomesourcesoftware@gmail.com>
+Please see https://github.com/leighmaddock/Monitor-Agent/LICENSE for license informati
+on
