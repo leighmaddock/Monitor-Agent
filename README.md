@@ -39,7 +39,7 @@ get_single_status.py
 ---------
 Location: Nagios server, a good place would be the plugins directory.
 This is a client written for nagios (but could be used for others) to grab the results of the remote call.
-Simply pass <hostname>, password and commandname + args.
+Simply pass hostname, password and commandname + args.
 
 (C) 2014, Leigh Maddock, <awesomesourcesoftware@gmail.com>
 Please see https://github.com/leighmaddock/Monitor-Agent/LICENSE for license informati
