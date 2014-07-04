@@ -8,7 +8,8 @@ cfgfile = "/etc/monitor-agent.cfg"
 
 ################################################################################
 def usage():
-    sys.stderr.write("Usage: %s\n" % sys.argv[0])
+	sys.stderr.write("Usage: %s <hostname/ipaddress> <commandpass> <commandname> .... <commandargs> \n" % sys.argv[0])
+	sys.exit(1)
 
 ################################################################################
 def getPort(hostname):
@@ -44,6 +45,8 @@ def getResults(HOST, PORT, remotecmd, remotepass):
 ################################################################################
 def main():
 	# Variables
+	if len(sys.argv) < 4:
+		usage()
 	HOST = sys.argv[1]
 	remotepass = sys.argv[2]
 	remotecmd = sys.argv[3:]
