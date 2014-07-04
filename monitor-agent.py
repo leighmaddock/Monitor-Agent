@@ -43,7 +43,7 @@ def checkCommand(password, commandname):
 ################################################################################
 def pipe_command(args):
 	subp = subprocess.Popen(args, stdin=None, stdout=subprocess.PIPE)
-	return subp.communicate()[0]
+	return subp.communicate()[0], subp.returncode
 
 ################################################################################
 class SingleTCPHandler(SocketServer.BaseRequestHandler):
@@ -52,10 +52,14 @@ class SingleTCPHandler(SocketServer.BaseRequestHandler):
 		data = self.request.recv(1024)
 		row = data.split()
 		if checkCommand(row[0], row[1]):
-			reply = pipe_command(row[1:])
+			reply, rccode = pipe_command(row[1:])
+			if not reply:
+				reply = "No output"
 		else:
 			reply = "Command %s not allowed to execute" % row[1]
-		if reply is not None:
+			rccode = 3
+		if reply:
+			self.request.send(str(rccode), SocketServer.socket.MSG_OOB)
 			self.request.send(reply)
 		self.request.close()
 
