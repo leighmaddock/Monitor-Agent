@@ -1,0 +1,24 @@
+---
+- hosts: all  # change to your host list/inventory
+  vars:
+    sourcedir: .  # change to your source directory
+    os: linux  # change to suit os
+  name: Update Monitor-Agent config/binaries
+  gather_facts: no
+  tasks:
+  - name: Sync pass file
+    copy: src={{ sourcedir }}/.monitor-agent.pass dest=/etc/.monitor-agent.pass owner=root group=root mode=0444
+  - name: Sync config file
+    copy: src={{ sourcedir }}/monitor-agent.cfg dest=/etc/monitor-agent.cfg owner=root group=root mode=0444
+    notify:
+    - Restart agent
+  - name: Sync init script
+    copy: src={{ sourcedir }}/monitor-agent.init.{{ os }} dest=/etc/init.d/monitor-agent.init.{{ os }} owner=root group=root mode=0555
+  - name: Sync agent
+    copy: src={{ sourcedir }}/monitor-agent.py dest=/usr/local/bin/monitor-agent.py owner=root group=root mode=0555
+    notify:
+    - Restart agent
+
+  handlers:
+    - name: Restart agent
+      shell: /etc/init.d/monitor-agent.init.{{ os }} restart
