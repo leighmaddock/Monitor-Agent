@@ -1,6 +1,6 @@
+#!/bin/sh
 # (C) 2014, Leigh Maddock, <awesomesourcesoftware@gmail.com>
 # Please see https://github.com/leighmaddock/Monitor-Agent/LICENSE for license information
-#!/bin/sh
 # Start/stop script for monitor-agent.py
 USER="nobody"
 STATE=$1
