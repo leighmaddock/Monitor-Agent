@@ -30,8 +30,8 @@ def getResults(HOST, PORT, remotecmd, remotepass):
 		sock.connect((HOST, PORT))
 		sock.send(message)
 		# 1kb limit
-		rccode = sock.recv(10, socket.MSG_OOB)
 		reply = sock.recv(1024)
+		rccode, reply = reply.partition(';')[0], reply.partition(';')[2]
 		sock.close()
 	except:
 		print "Connection issues, please investigate"

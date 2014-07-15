@@ -51,15 +51,17 @@ class SingleTCPHandler(SocketServer.BaseRequestHandler):
 		# self.request is the client connection 1kb limit
 		data = self.request.recv(1024)
 		row = data.split()
+		# return RC 3 if things don't go to plan
+		rccode = 3
 		if checkCommand(row[0], row[1]):
 			reply, rccode = pipe_command(row[1:])
 			if not reply:
 				reply = "No output"
 		else:
 			reply = "Command %s not allowed to execute" % row[1]
-			rccode = 3
+		# Prefix message with returncode; to be parsed by caller
+		reply = '%d;%s' % (rccode, reply)
 		if reply:
-			self.request.send(str(rccode), SocketServer.socket.MSG_OOB)
 			self.request.send(reply)
 		self.request.close()
 
