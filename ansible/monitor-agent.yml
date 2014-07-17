@@ -15,7 +15,7 @@
   - name: Sync init script
     copy: src={{ sourcedir }}/monitor-agent.init.{{ os }} dest=/etc/init.d/monitor-agent.init.{{ os }} owner=root group=root mode=0555
   - name: Setup rc3 script - change to chkconfig if linux
-    shell: ln -s /etc/init.d/monitor-agent.init.{{ os }} /etc/rc3.d/S01monitor-agent.init.{{ os }}
+    file: src=/etc/init.d/monitor-agent.init.{{ os }} path=/etc/rc3.d/S01monitor-agent.init.{{ os }} state=link
   - name: Sync agent
     copy: src={{ sourcedir }}/monitor-agent.py dest=/usr/local/bin/monitor-agent.py owner=root group=root mode=0555
     notify:
