@@ -1,0 +1,10 @@
+[Unit]
+Description=Nagios monitoring agent
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/local/bin/monitor-agent.py 
+ExecReload=/bin/kill -USR2 $MAINPID
+
+[Install]
+WantedBy=multi-user.target
